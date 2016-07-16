@@ -1,4 +1,5 @@
-# Peer Graded Assignment: Course Project: Shiny Application and Reproducible Pitch
+# Course Project: Shiny Application and Reproducible Pitch
+## Coursera Data Science Special Track - 09. Developing Data Products
 
 This document is for Shiny project. 
 
