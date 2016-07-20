@@ -1,0 +1,83 @@
+Calculation the Number of Samples
+========================================================
+author: Ahn
+date: July 20th, 2016
+autosize: true
+
+Objectives
+========================================================
+
+Some people feel difficult to find out how many people they should survey. 
+To calculate the number of samples, we need to decide confidence level and maximum error rate. 
+Most used confidence levels are 90%, 95% and 99%. 
+Maximum error rate is up to you. Some people think 5% is small while some can't tolerate it. 
+
+For shiny, we need ui.R and sever.R files. 
+Let's start with ui.R file.  
+
+ui.R
+========================================================
+
+I made people choose confidence level among most used three confidence levels. And regarding with maxium error rate, people input it as interger by themselves. 
+
+```{r,eval=FALSE}
+library(shiny)
+
+shinyUI(pageWithSidebar(
+  headerPanel("Calculation the Number of Samples"),
+  sidebarPanel(
+       radioButtons("id1", "Confidence Level", 
+                       c("90%"="1", 
+                         "95%"="2",
+                         "99%"="3")),
+       numericInput('id2', 'Numeric input, Maximum error(%)', 0, min=0, max=100, step=1)
+        ),
+  mainPanel(
+    h3('Illustrating outputs'),
+    h4('Confidence Level you choose'),
+    verbatimTextOutput("conf"),
+    h4('Maximum error you accept'),
+    verbatimTextOutput("error"),
+    h4('Minimum Number of Samples is'),
+    verbatimTextOutput("result")
+    )
+))
+```
+
+server.R
+========================================================
+
+I make the formula in three cases according to confidence levels - 90%, 95% and 99%. 
+
+```{r, eval=FALSE}
+library(shiny)
+shinyServer(
+  function(input, output){    
+    output$conf <- renderPrint({
+      if (input$id1=="1") "90%"
+      else if (input$id1=="2") "95%"
+      else "99%"})
+    output$error <- renderPrint({input$id2})
+    output$result <- renderPrint({
+      input$goButton
+      if (input$id1=="1") as.numeric(1.65^2/(4*(input$id2/100)^2))
+      else if (input$id1=="2") as.numeric(1.96^2/(4*(input$id2/100)^2))
+      else as.numeric(2.58^2/(4*(input$id2/100)^2))
+      })
+}
+)
+```
+
+Final Result for Shiny
+========================================================
+
+The shiny file's result is below;
+
+```{r, eval=FALSE}
+runApp()
+```
+
+
+You can see the result below URL :
+
+https://ship4sun.shinyapps.io/shinyAssignment/
